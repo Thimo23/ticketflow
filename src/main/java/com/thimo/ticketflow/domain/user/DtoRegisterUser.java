@@ -1,5 +1,6 @@
 package com.thimo.ticketflow.domain.user;
 
+import com.thimo.ticketflow.infra.validations.UniqueEmail;
 import jakarta.validation.constraints.NotBlank;
 
 public record DtoRegisterUser(
@@ -8,6 +9,7 @@ public record DtoRegisterUser(
         @NotBlank
         String password,
         @NotBlank
+        @UniqueEmail
         String email
 ) {
     public User toEntity(String encodedPassword){

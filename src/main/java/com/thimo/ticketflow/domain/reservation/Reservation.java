@@ -1,5 +1,6 @@
 package com.thimo.ticketflow.domain.reservation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thimo.ticketflow.domain.seat.Seat;
 import com.thimo.ticketflow.domain.user.User;
 import jakarta.persistence.*;
@@ -20,7 +21,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
@@ -34,6 +35,19 @@ public class Reservation {
 
     @Column(name = "reservation_date",nullable = false)
     private Date reservationDate;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public ReservationStatus getReservationStatus() {
+        return reservationStatus;
+    }
+
+    public Date getReservationDate() {
+        return reservationDate;
+    }
 
 
 }

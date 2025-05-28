@@ -26,17 +26,21 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
       var authHeader = request.getHeader("Authorization");
+
       if (authHeader != null){
           var token = authHeader.replace("Bearer ","");
           var userEmail = jwtService.getSubject(token);
 
           if (userEmail != null){
-              var user = userRepository.findByEmail(userEmail);
-              var authentication = new UsernamePasswordAuthenticationToken(user,null,user.get().getAuthorities());
-              SecurityContextHolder.getContext().setAuthentication(authentication);
+              var optionalUser = userRepository.findByEmail(userEmail);
+
+              if(optionalUser.isPresent()){
+                var user = optionalUser.get();
+                var authentication = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
+                  SecurityContextHolder.getContext().setAuthentication(authentication);
+              }
           }
       }
-
       filterChain.doFilter(request,response);
     }
 }

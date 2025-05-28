@@ -20,7 +20,6 @@ import java.net.URI;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationService authenticationService;
 
     public AuthController(AuthenticationService authenticationService){
@@ -37,7 +36,6 @@ public class AuthController {
 
     @PostMapping("/login")
     ResponseEntity<DtoJWToken> login(@RequestBody DtoAuthUser dtoAuthUser){
-        logger.info("----ESTOY EN EL CONTROLLER-----");
         DtoJWToken dtoJWToken = authenticationService.authenticateUser(dtoAuthUser);
         return ResponseEntity.ok(dtoJWToken);
     }
